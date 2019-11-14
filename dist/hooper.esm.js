@@ -384,15 +384,15 @@ var Carousel = {
         return;
       }
 
-      this.$emit('beforeSlide', {
-        currentSlide: this.currentSlide,
-        slideTo: index
-      });
       var _this$config2 = this.config,
           infiniteScroll = _this$config2.infiniteScroll,
           transition = _this$config2.transition;
       var previousSlide = this.currentSlide;
-      var index = infiniteScroll ? slideIndex : getInRange(slideIndex, this.trimStart, this.slidesCount - this.trimEnd); // Notify others if in a group and is the slide event initiator.
+      var index = infiniteScroll ? slideIndex : getInRange(slideIndex, this.trimStart, this.slidesCount - this.trimEnd);
+      this.$emit('beforeSlide', {
+        currentSlide: this.currentSlide,
+        slideTo: normalizeSlideIndex(index, this.slidesCount)
+      }); // Notify others if in a group and is the slide event initiator.
 
       if (this.group && isSource) {
         EMITTER.$emit("slideGroup:".concat(this.group), slideIndex);
@@ -405,7 +405,7 @@ var Carousel = {
         _this.currentSlide = normalizeSlideIndex(index, _this.slidesCount);
       }, transition);
       this.$emit('slide', {
-        currentSlide: this.currentSlide,
+        currentSlide: normalizeSlideIndex(index, this.slidesCount),
         slideFrom: previousSlide
       });
     },
