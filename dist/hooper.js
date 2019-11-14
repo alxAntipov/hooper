@@ -335,6 +335,7 @@
       },
       trackTransform: function trackTransform() {
         var _this$config = this.config,
+            infiniteScroll = _this$config.infiniteScroll,
             vertical = _this$config.vertical,
             rtl = _this$config.rtl,
             centerMode = _this$config.centerMode;
@@ -342,9 +343,10 @@
         var slideLength = vertical ? this.slideHeight : this.slideWidth;
         var containerLength = vertical ? this.containerHeight : this.containerWidth;
         var dragDelta = vertical ? this.delta.y : this.delta.x;
+        var clonesSpace = infiniteScroll ? slideLength * this.slidesCount : 0;
         var centeringSpace = centerMode ? (containerLength - slideLength) / 2 : 0; // calculate track translate
 
-        var translate = dragDelta + direction * (centeringSpace - this.currentSlide * slideLength);
+        var translate = dragDelta + direction * (centeringSpace - clonesSpace - this.currentSlide * slideLength);
 
         if (vertical) {
           return "transform: translate(0, ".concat(translate, "px);");

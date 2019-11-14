@@ -147,16 +147,17 @@ export default {
       };
     },
     trackTransform() {
-      const { vertical, rtl, centerMode } = this.config;
+      const { infiniteScroll, vertical, rtl, centerMode } = this.config;
 
       const direction = rtl ? -1 : 1;
       const slideLength = vertical ? this.slideHeight : this.slideWidth;
       const containerLength = vertical ? this.containerHeight : this.containerWidth;
       const dragDelta = vertical ? this.delta.y : this.delta.x;
+      const clonesSpace = infiniteScroll ? slideLength * this.slidesCount : 0;
       const centeringSpace = centerMode ? (containerLength - slideLength) / 2 : 0;
 
       // calculate track translate
-      const translate = dragDelta + direction * (centeringSpace - this.currentSlide * slideLength);
+      const translate = dragDelta + direction * (centeringSpace - clonesSpace - this.currentSlide * slideLength);
 
       if (vertical) {
         return `transform: translate(0, ${translate}px);`;
